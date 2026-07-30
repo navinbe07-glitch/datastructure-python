@@ -48,3 +48,4 @@ no=int(input("Enter number of cars to out: "))
 for i in range(no):
     cars.dequeue_car()
     cars.display()
+    print("\n")
