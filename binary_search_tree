@@ -1,0 +1,123 @@
+class Node:
+    def __init__(self, key):
+        self.key = key
+        self.left = None
+        self.right = None
+
+
+class Tree:
+    def __init__(self):
+        self.root = None
+
+    def insert(self, key):
+        self.root = self._insert(self.root, key)
+
+    def _insert(self, root, key):
+        if root is None:
+            return Node(key)
+
+        if key < root.key:
+            root.left = self._insert(root.left, key)
+        elif key > root.key:
+            root.right = self._insert(root.right, key)
+
+        return root
+
+    def search(self, key):
+        return self._search(self.root, key)
+
+    def _search(self, root, key):
+        if root is None or root.key == key:
+            return root
+
+        if key < root.key:
+            return self._search(root.left, key)
+
+        return self._search(root.right, key)
+
+    
+    def delete(self, key):
+        self.root = self._delete(self.root, key)
+
+    def _delete(self, root, key):
+        if root is None:
+            return None
+
+        if key < root.key:
+            root.left = self._delete(root.left, key)
+
+        elif key > root.key:
+            root.right = self._delete(root.right, key)
+
+      
+        else:
+
+
+            if root.left is None and root.right is None:
+                return None
+
+            if root.left is None:
+                return root.right
+
+
+            if root.right is None:
+                return root.left
+
+
+            successor = self._min_value_node(root.right)
+
+            root.key = successor.key
+
+            root.right = self._delete(root.right, successor.key)
+
+        return root
+
+    def _min_value_node(self, root):
+        current = root
+
+        while current.left is not None:
+            current = current.left
+
+        return current
+
+    def inorder(self):
+        self._inorder(self.root)
+        print()
+
+    def _inorder(self, root):
+        if root:
+            self._inorder(root.left)
+            print(root.key, end=" ")
+            self._inorder(root.right)
+
+
+bst = Tree()
+n=int(input("Enter the numbers of root: "))
+values = []
+for i in range(n):
+    v=int(input("Enter value to insert: "))
+    values.append(v)
+
+
+for value in values:
+    bst.insert(value)
+
+print("Inorder Traversal:")
+bst.inorder()
+
+
+key = int(input("Enter value to Search: "))
+
+if bst.search(key):
+    print(f"{key} found in Tree..")
+else:
+    print(f"{key} not found in Tree..")
+
+d=int(input("Enter value for delete: "))
+print("\nBefore deletion:")
+bst.inorder()
+
+bst.delete(d)
+
+print(f"After deleting {d}:")
+bst.inorder()
